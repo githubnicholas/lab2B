@@ -1,0 +1,19 @@
+.card {
+    width: 256px;
+    height: 640px;
+    margin:10px;
+    opacity: 0.9;
+}
+
+.card:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.card-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-height: 64px;
+}
+
