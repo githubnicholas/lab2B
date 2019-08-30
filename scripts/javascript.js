@@ -37,23 +37,34 @@ function viderPanier(){
     panierDeFilms = [];
 }
 
+function deleteMovie(){
+    element = event.target;
+    row = element.parentElement;
+    let idToRemove = row.firstChild.innerHTML;
+    let index = panierDeFilms.indexOf(idToRemove);
+    if (index > -1){
+        panierDeFilms.splice(index, 1);
+    }
+    updatePanier();
+
+}
+
 function updatePanier(){
     
     tableFilms = document.getElementById('tableFilms');
     while(tableFilms.hasChildNodes()){
         tableFilms.removeChild(tableFilms.firstChild);
     }
-    let i = 1;
     panierDeFilms.forEach(element => {
         
         url = "https://api.themoviedb.org/3/movie/" + element + "?api_key=f995e37aba4da33d485f87e41759bcc6&language=fr-CA";
         action = function(){
             let movieData = JSON.parse(this.response);
             let row = document.createElement('tr');
-            let no = document.createElement('th');
-            no.setAttribute('scope', 'row');
-            no.innerHTML = "" + i;
-            row.appendChild(no);
+            let id = document.createElement('th');
+            id.setAttribute('scope', 'row');
+            id.innerHTML = movieData['id'];
+            row.appendChild(id);
             let titre = document.createElement('td');
             titre.innerHTML = movieData["title"];
             row.appendChild(titre);
@@ -63,8 +74,15 @@ function updatePanier(){
             let date = document.createElement('td');
             date.innerHTML = movieData["release_date"];
             row.appendChild(date);
+            let deleteButton = document.createElement('button');
+            deleteButton.classList.add('btn');
+            deleteButton.classList.add('btn-danger');
+            deleteButton.setAttribute('type', 'button');
+            deleteButton.addEventListener('click', deleteMovie);
+            deleteButton.innerHTML = "Supprimer";
+            deleteButton.style.margin = "10px"
+            row.appendChild(deleteButton);
             tableFilms.appendChild(row);
-            i++;
         }
         processURL(url, action);
     });
